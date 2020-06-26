@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appboxo Store</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="main">
+    <h1>AppboxoStore</h1>
+    <ul class="cards">
+      <li class="cards_item">
+        <div class="card">
+          <div class="card_image"><img src="/img/cat-kitchen_720x.jpg"></div>
+          <div class="card_content">
+            <h2 class="card_title">Quisque Teapot</h2>
+            <p class="card_text">Theo Teapot is a Scandinavian-Japanese teapot made from stoneware and bamboo, designed by Unit 10 Design for Stelton.</p>
+            <button id="teapot" class="btn card_btn">Buy for $110</button>
+          </div>
+        </div>
+      </li>
+      <li class="cards_item">
+        <div class="card">
+          <div class="card_image"><img src="/img/spot-lamp-01_540x.jpg"></div>
+          <div class="card_content">
+            <h2 class="card_title">Spot Table Lamp</h2>
+            <p class="card_text">Set the stage. The Spot lamp is a lively, versatile addition to your room.</p>
+            <button id="lamp" class="btn card_btn">Buy for $39</button>
+          </div>
+        </div>
+      </li>
+      <li class="cards_item">
+        <div class="card">
+          <div class="card_image"><img src="/img/tumbler-clock-01_720x.jpg"></div>
+          <div class="card_content">
+            <h2 class="card_title">Decorative Alarm Clock</h2>
+            <p class="card_text">Tumbler is a modern variant of the classic alarm clock from Danish design duo, Norm Architects. </p>
+            <button id="clock" class="btn card_btn">Buy for $65</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <h3 class="made_by">Made with ♡ by Appboxo</h3>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal__close" id="close-modal">
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><polyline points='328 112 184 256 328 400' style='fill:none;stroke:#8dbaef;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px'/></svg>
+    </div>
+    <div class="modal__icon modal__icon--success">
+      🎉
+    </div>
+    <div class="modal__icon modal__icon--error">
+      😔
+    </div>
+    <p class="modal__title modal__title--success">
+      Successfully purchased! 
+    </p>
+    <p class="modal__title modal__title--error">
+      Oops, something went wrong! <br> Try again.
+    </p>
+  </div>
+
+  <script src="https://unpkg.com/@appboxo/js-sdk"></script>
+  <script>
+    const PRODUCTS = {
+      teapot: {
+        name: 'Quisque Teapot',
+        price: 110,
+        currency: 'USD'
+      },
+      lamp: {
+        name: 'Spot Table Lamp',
+        price: 110,
+        currency: 'USD'
+      },
+      clock: {
+        name: 'Decorative Alarm Clock',
+        price: 65,
+        currency: 'USD'
+      }
+    }
+    const PRODUCT_NAMES = Object.keys(PRODUCTS)
+
+    // Init miniapp
+    appboxoSDK.init()
+
+    document.getElementById('close-modal').addEventListener('click', (e) => {
+      document.getElementById('modal').style.display = "none";
+    })
+
+    // Add click events
+    PRODUCT_NAMES.forEach(productName => {
+      document.getElementById(productName).addEventListener('click', (e) => {
+        e.preventDefault()
+
+        var product = PRODUCTS[productName]
+        appboxoSDK.sendPromise('AppBoxoWebAppCustomEvent', {
+          type: 'buy_from_miniapp',
+          payload: product
+        }).then(() => {
+          document.getElementById('modal').classList.add('modal--success')
+          document.getElementById('modal').classList.remove('modal--error')
+          document.getElementById('modal').style.display = "flex";
+        }).catch(() => {
+          document.getElementById('modal').classList.remove('modal--success')
+          document.getElementById('modal').classList.add('modal--error')
+          document.getElementById('modal').style.display = "flex";
+        })
+      });
+    });
+  </script>
+</body>
+</html>
