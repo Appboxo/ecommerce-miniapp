@@ -86,6 +86,18 @@
     // Init miniapp
     appboxoSDK.init()
 
+
+    // Get initial data
+    appboxoSdk.getInitData()
+      .then((appData) => {
+        localStorage.clear()
+        localStorage.setItem('app_id', appData.app_id)
+        localStorage.setItem('client_id', appData.client_id)
+      })
+      .catch((error) => {
+        console.log('Error getting web app init data: ', error)
+      })
+
     document.getElementById('close-modal').addEventListener('click', (e) => {
       document.getElementById('modal').style.display = "none";
     })
@@ -99,10 +111,43 @@
         appboxoSDK.sendPromise('AppBoxoWebAppCustomEvent', {
           type: 'buy_from_miniapp',
           payload: product
-        }).then(() => {
+        }).then(async () => {
           document.getElementById('modal').classList.add('modal--success')
           document.getElementById('modal').classList.remove('modal--error')
           document.getElementById('modal').style.display = "flex";
+          try {
+            await appboxoSdk.track({
+              app_id: localStorage.getItem('app_id'),
+              client_id: localStorage.getItem('client_id'),
+              action: 'transaction',
+              payload: {
+                shipping: 0,
+                tax: 0,
+                discount: 0,
+                currency_code: 'USD',
+                customer: {
+                  first_name: 'John',
+                  last_name: 'Doe',
+                  email: 'jdoe@domain.com',
+                  ip_address: ''
+                },
+                items: [
+                  {
+                    name: product.name,
+                    description: '',
+                    price: product.price,
+                    amount: 1,
+                    total: product.price,
+                    package_id: 1232
+                  }
+                ]
+              }
+            })
+
+            console.log('Transaction tracking sent')
+          } catch (error) {
+            console.error('Failed to send transaction data')
+          }
         }).catch(() => {
           document.getElementById('modal').classList.remove('modal--success')
           document.getElementById('modal').classList.add('modal--error')
