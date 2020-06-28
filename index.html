@@ -88,7 +88,7 @@
 
 
     // Get initial data
-    appboxoSdk.getInitData()
+    appboxoSDK.getInitData()
       .then((appData) => {
         localStorage.clear()
         localStorage.setItem('app_id', appData.app_id)
@@ -116,7 +116,7 @@
           document.getElementById('modal').classList.remove('modal--error')
           document.getElementById('modal').style.display = "flex";
           try {
-            await appboxoSdk.track({
+            await appboxoSDK.track({
               app_id: localStorage.getItem('app_id'),
               client_id: localStorage.getItem('client_id'),
               action: 'transaction',
