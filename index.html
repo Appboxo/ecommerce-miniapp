@@ -111,7 +111,8 @@
         appboxoSDK.sendPromise('AppBoxoWebAppCustomEvent', {
           type: 'buy_from_miniapp',
           payload: product
-        }).then(async () => {
+        }).then(async (data) => {
+          console.log('Received: ', data)
           document.getElementById('modal').classList.add('modal--success')
           document.getElementById('modal').classList.remove('modal--error')
           document.getElementById('modal').style.display = "flex";
@@ -148,7 +149,8 @@
           } catch (error) {
             console.error('Failed to send transaction data')
           }
-        }).catch(() => {
+        }).catch((error) => {
+          console.log('Received: ', error)
           document.getElementById('modal').classList.remove('modal--success')
           document.getElementById('modal').classList.add('modal--error')
           document.getElementById('modal').style.display = "flex";
