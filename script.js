@@ -26,10 +26,13 @@ const loginBtn = document.getElementById('login')
 const logoutBtn = document.getElementById('logout')
 const mainPage = document.getElementById('main-page')
 const closeModalBtn = document.getElementById('close-modal')
+const userEmailParagraph = document.getElementById('user-email')
 
 loginBtn.addEventListener('click', login)
 logoutBtn.addEventListener('click', logout)
 closeModalBtn.addEventListener('click', closeModal)
+
+logoutBtn.style.display = 'none'
 
 // Add click events
 mainPage.addEventListener('click', (e) => {
@@ -40,10 +43,14 @@ mainPage.addEventListener('click', (e) => {
 
 async function login() {
   try {
-    const token = await appboxoSDK.login()
-    console.log('auth token', token)
+    const data = await appboxoSDK.login()
+    userEmailParagraph.innerText = JSON.stringify(data)
+    loginBtn.style.display = 'none'
+    logoutBtn.style.display = 'block'
   } catch (error) {
-    console.error('auth error', error)
+    userEmailParagraph.innerText = ''
+    loginBtn.style.display = 'block'
+    logoutBtn.style.display = 'none'
   }
 }
 
