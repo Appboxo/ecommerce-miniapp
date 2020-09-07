@@ -48,15 +48,16 @@ async function login() {
     loginBtn.style.display = 'none'
     logoutBtn.style.display = 'block'
   } catch (error) {
-    userEmailParagraph.innerText = '(empty)'
-    loginBtn.style.display = 'block'
-    logoutBtn.style.display = 'none'
+    userEmailParagraph.innerText = error
   }
 }
 
 async function logout() {
   try {
     await appboxoSDK.logout()
+    userEmailParagraph.innerText = '(empty)'
+    loginBtn.style.display = 'block'
+    logoutBtn.style.display = 'none'
   } catch (error) {
     console.error(error)
   }
