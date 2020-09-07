@@ -44,11 +44,11 @@ mainPage.addEventListener('click', (e) => {
 async function login() {
   try {
     const data = await appboxoSDK.login()
-    userEmailParagraph.innerText = JSON.stringify(data)
+    userEmailParagraph.innerText = data.email ? email : '(empty)'
     loginBtn.style.display = 'none'
     logoutBtn.style.display = 'block'
   } catch (error) {
-    userEmailParagraph.innerText = ''
+    userEmailParagraph.innerText = '(empty)'
     loginBtn.style.display = 'block'
     logoutBtn.style.display = 'none'
   }
