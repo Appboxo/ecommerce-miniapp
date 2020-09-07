@@ -44,7 +44,7 @@ mainPage.addEventListener('click', (e) => {
 async function login() {
   try {
     const data = await appboxoSDK.login()
-    userEmailParagraph.innerText = data.email ? email : '(empty)'
+    userEmailParagraph.innerHTML = data.email ? email : '(empty)'
     loginBtn.style.display = 'none'
     logoutBtn.style.display = 'block'
   } catch (error) {
