@@ -99,7 +99,7 @@ function closeModal() {
 
 function getMiniappInitData() {
   appboxoSDK.getInitData().then(initData => {
-    const theme = initData?.data?.theme
+    const theme = initData && initData.data && initData.data.theme || ''
     theme && setGlobalStyles(theme)
   })
 }
