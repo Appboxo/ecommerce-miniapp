@@ -19,7 +19,9 @@ const PRODUCTS = {
 // Init miniapp
 appboxoSDK.init()
 
-appboxoSDK.getInitData()
+listenMiniappRestoreEvent()
+
+getMiniappInitData()
 
 const modal = document.getElementById('modal')
 const loginBtn = document.getElementById('login')
@@ -95,4 +97,27 @@ function closeModal() {
   modal.style.display = 'none'
 }
 
+function getMiniappInitData() {
+  appboxoSDK.getInitData().then(initData => {
+    const theme = initData?.data?.theme
+    theme && setGlobalStyles(theme)
+  })
+}
 
+function setGlobalStyles(theme) {
+  const primaryColor = theme === 'dark' ? '#272727' : '#ffffff'
+  const fontColor = theme === 'dark' ? '#ffffff' : '#272727'
+  document.documentElement.style.setProperty('--primary-color', primaryColor)
+  document.documentElement.style.setProperty('--font-color', fontColor)
+}
+
+function listenMiniappRestoreEvent() {
+  appboxoSDK.subscribe(onRestoreSubscription)
+}
+
+function onRestoreSubscription(e) {
+  if (e.detail) {
+    const { type } = e.detail
+    type === 'AppBoxoWebAppOnRestore' && getMiniappInitData()
+  }
+}

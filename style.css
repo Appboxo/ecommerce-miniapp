@@ -13,12 +13,14 @@ html {
 }
 
 body {
-    color: #272727;
+    color: var(--font-color);
     font-family: 'Quicksand', serif;
     font-style: normal;
     font-weight: 400;
     letter-spacing: 0;
     padding: 1rem;
+    margin: 0;
+    background: var(--primary-color);
 }
 
 .main {
@@ -30,11 +32,14 @@ body {
     position: relative;
 }
 
-.main header img {
+.main header .profile-btn {
+    width: 25px;
+    height: 25px;
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    fill: var(--font-color);
 }
 
 #auth-btn:checked ~ .auth-modal {
@@ -52,6 +57,8 @@ body {
     flex-direction: column;
     transform-origin: top;
     transform: translate(0%, -200%) scale(0);
+    background: var(--primary-color, #fff);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .main header .auth-modal .btn {
@@ -187,6 +194,10 @@ img {
 .modal__title,
 .modal__icon {
     display: none;
+}
+
+.modal--success, .modal--error {
+    background: var(--primary-color, #fff);
 }
 
 .modal--success .modal__title--success {
